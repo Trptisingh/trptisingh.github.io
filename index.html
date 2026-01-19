@@ -510,23 +510,85 @@ header{
 }
 
 /* ================= CONTACT ================= */
-.contact-card{
-  display:grid;
-  gap:22px;
+
+.contact-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-top:40px;
 }
+
+.contact-card{
+  width:100%;
+  max-width:520px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:32px;
+  display:grid;
+  gap:18px;
+}
+
+/* contact item */
 .contact-item{
   display:flex;
   align-items:center;
-  gap:16px;
-  font-size:1.1rem;
+  gap:18px;
+  padding:14px 18px;
+  border-radius:14px;
+  font-size:1.05rem;
+  color:var(--text);
+  cursor:pointer;
+  text-decoration:none;
+
+  opacity:0;
+  transform:translateY(14px);
+  transition:all .35s ease;
 }
+
+.contact-item.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.contact-item:hover{
+  background:rgba(100,150,255,.08);
+  transform:translateX(6px);
+}
+
 .contact-item img{
   width:36px;
   height:36px;
-  background:#fff;
   padding:6px;
-  border-radius:8px;
+  background:#fff;
+  border-radius:10px;
 }
+
+/* ---------- TOOLTIP ---------- */
+.tooltip{
+  position:relative;
+}
+
+.tooltip::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  right:-10px;
+  top:50%;
+  transform:translate(100%, -50%);
+  background:#111;
+  color:#fff;
+  font-size:.75rem;
+  padding:6px 10px;
+  border-radius:6px;
+  opacity:0;
+  pointer-events:none;
+  white-space:nowrap;
+  transition:.25s ease;
+}
+
+.tooltip:hover::after{
+  opacity:1;
+}
+
 /* ================= CERTIFICATIONS ================= */
 .cert-card{
   background:var(--card);
@@ -953,33 +1015,52 @@ footer{
 
 </section>
 
- <!-- CONTACT -->
+<!-- CONTACT -->
 <section class="section" id="contact">
-  <h2>Contact</h2>
-  <div class="card contact-card">
+  <h2 class="section-title">Contact</h2>
 
-    <div class="contact-item">
-      <img src="https://img.icons8.com/ios-filled/100/000000/email.png">
-      <a href="mailto:triptisingh726@gmail.com">triptisingh726@gmail.com</a>
+  <div class="contact-wrapper">
+    <div class="contact-card reveal">
+
+      <!-- EMAIL (copy to clipboard) -->
+      <div class="contact-item tooltip"
+           data-tooltip="Click to copy email"
+           onclick="copyEmail()">
+        <img src="https://img.icons8.com/ios-filled/100/000000/email.png" alt="Email">
+        <span id="email-text">triptisingh726@gmail.com</span>
+      </div>
+
+      <!-- LINKEDIN -->
+      <a class="contact-item tooltip"
+         href="https://www.linkedin.com/in/-triptisingh/"
+         target="_blank"
+         data-tooltip="Open LinkedIn">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg">
+        <span>LinkedIn</span>
+      </a>
+
+      <!-- GITHUB -->
+      <a class="contact-item tooltip"
+         href="https://github.com/Trptisingh"
+         target="_blank"
+         data-tooltip="Open GitHub">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg">
+        <span>GitHub</span>
+      </a>
+
+      <!-- GITLAB -->
+      <a class="contact-item tooltip"
+         href="https://gitlab.com/tripti_singh"
+         target="_blank"
+         data-tooltip="Open GitLab">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg">
+        <span>GitLab</span>
+      </a>
+
     </div>
-
-    <div class="contact-item">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg">
-      <a href="https://www.linkedin.com/in/-triptisingh/" target="_blank">LinkedIn</a>
-    </div>
-
-    <div class="contact-item">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg">
-      <a href="https://github.com/Trptisingh" target="_blank">GitHub</a>
-    </div>
-
-    <div class="contact-item">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg">
-      <a href="https://gitlab.com/tripti_singh" target="_blank">GitLab</a>
-    </div>
-
   </div>
 </section>
+
  
 <footer>
   © 2026 Tripti Singh • Cloud & DevOps Engineer
@@ -1057,6 +1138,35 @@ icons.forEach((icon, i) => {
 function toggleCert(card){
   card.classList.toggle("active");
 }
+<script>
+/* Copy email */
+function copyEmail(){
+  const email = document.getElementById("email-text").innerText;
+  navigator.clipboard.writeText(email);
+
+  const emailItem = document.getElementById("email-text").parentElement;
+  emailItem.setAttribute("data-tooltip", "Copied ✔");
+
+  setTimeout(()=>{
+    emailItem.setAttribute("data-tooltip", "Click to copy email");
+  }, 1500);
+}
+
+/* Scroll reveal – staggered animation */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const items = entry.target.querySelectorAll(".contact-item");
+      items.forEach((item, i) => {
+        setTimeout(() => item.classList.add("show"), i * 120);
+      });
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+</script>
 
 
 
