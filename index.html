@@ -1138,7 +1138,6 @@ icons.forEach((icon, i) => {
 function toggleCert(card){
   card.classList.toggle("active");
 }
-<script>
 /* Copy email */
 function copyEmail(){
   const email = document.getElementById("email-text").innerText;
@@ -1166,10 +1165,6 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 
 document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
-</script>
-
-
-
 </script>
 
 </body>
