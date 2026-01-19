@@ -468,46 +468,53 @@ header{
   box-shadow: 0 8px 18px rgba(0,0,0,0.2);
 }
 
-/* ================= TOOLTIP ================= */
+/* ===== FINAL TOOLTIP STYLE ===== */
 
-.tooltip {
-  position: relative;
-  display: inline-block;
+.tooltip{
+  position:relative;
 }
 
-.tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 135%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #111;
-  color: #fff;
-  font-size: 0.75rem;
-  padding: 6px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+/* tooltip bubble */
+.tooltip::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  left:50%;
+  top:100%;
+  transform:translateX(-50%) translateY(8px);
+  background:var(--card);
+  color:var(--text);
+  font-size:.75rem;
+  padding:6px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  box-shadow:0 6px 18px rgba(0,0,0,.12);
+  opacity:0;
+  pointer-events:none;
+  white-space:nowrap;
+  transition:opacity .25s ease, transform .25s ease;
+  z-index:5;
 }
 
-.tooltip::before {
-  content: "";
-  position: absolute;
-  bottom: 120%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 6px;
-  border-style: solid;
-  border-color: #111 transparent transparent transparent;
-  opacity: 0;
+/* small arrow */
+.tooltip::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:100%;
+  transform:translateX(-50%);
+  border:6px solid transparent;
+  border-bottom-color:var(--card);
+  opacity:0;
+  transition:.25s ease;
 }
 
+/* hover */
 .tooltip:hover::after,
-.tooltip:hover::before {
-  opacity: 1;
+.tooltip:hover::before{
+  opacity:1;
+  transform:translateX(-50%) translateY(12px);
 }
+
 
 /* ================= CONTACT ================= */
 
